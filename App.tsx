@@ -1,26 +1,62 @@
-import { StatusBar, useColorScheme } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { WebView } from 'react-native-webview';
+import 'react-native-gesture-handler'
+import React from 'react'
+import { StatusBar, StyleSheet, Platform } from 'react-native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { NavigationContainer } from '@react-navigation/native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { LayoutDashboard } from 'lucide-react-native'
+import Toast from 'react-native-toast-message'
+import { MonitoringProvider } from './src/hooks/useMonitoringData'
+import { DashboardPage } from './src/pages/DashboardPage'
+import { colors } from './src/styles/theme'
 
-const WEB_URL = 'https://monitoring-app-hazel.vercel.app/';
+const Tab = createBottomTabNavigator()
 
-function AppContent() {
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <WebView source={{ uri: WEB_URL }} style={{ flex: 1 }} />
-    </SafeAreaView>
-  );
-}
-
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
+export default function App() {
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor={colors.background}
+        translucent={Platform.OS === 'android'}
+      />
+      <MonitoringProvider>
+        <NavigationContainer>
+          <Tab.Navigator
+            screenOptions={{
+              headerShown: false,
+              tabBarActiveTintColor: colors.primary,
+              tabBarInactiveTintColor: colors.mutedForeground,
+              tabBarStyle: styles.tabBar,
+              tabBarLabelStyle: styles.tabBarLabel,
+            }}
+          >
+            <Tab.Screen
+              name="Dashboard"
+              component={DashboardPage}
+              options={{
+                tabBarLabel: 'Dashboard',
+                tabBarIcon: ({ color, size }) => (
+                  <LayoutDashboard color={color} size={size} />
+                ),
+              }}
+            />
+          </Tab.Navigator>
+        </NavigationContainer>
+        <Toast />
+      </MonitoringProvider>
     </SafeAreaProvider>
-  );
+  )
 }
 
-export default App;
+const styles = StyleSheet.create({
+  tabBar: {
+    backgroundColor: 'rgba(255,255,255,0.95)',
+    borderTopColor: colors.border,
+    borderTopWidth: 1,
+  },
+  tabBarLabel: {
+    fontSize: 12,
+    fontWeight: '500',
+  },
+})
