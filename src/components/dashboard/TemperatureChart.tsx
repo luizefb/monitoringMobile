@@ -11,6 +11,11 @@ interface TemperatureChartProps {
   records: MonitoringRecord[]
 }
 
+/** Escala fixa 0–100 (5 marcas: 0, 25, 50, 75, 100) para um eixo comum a °C e %. */
+const CHART_Y_MAX = 100
+const CHART_Y_SECTIONS = 4
+const CHART_STEP_VALUE = CHART_Y_MAX / CHART_Y_SECTIONS
+
 export function TemperatureChart({ records }: TemperatureChartProps) {
   const { width } = useWindowDimensions()
   const chartWidth = width - 80
@@ -59,6 +64,9 @@ export function TemperatureChart({ records }: TemperatureChartProps) {
             data2={humData}
             width={chartWidth}
             height={200}
+            maxValue={CHART_Y_MAX}
+            stepValue={CHART_STEP_VALUE}
+            noOfSections={CHART_Y_SECTIONS}
             color1={colors.temp}
             color2={colors.humidity}
             thickness={2}
@@ -67,12 +75,16 @@ export function TemperatureChart({ records }: TemperatureChartProps) {
             xAxisLabelTexts={labels}
             xAxisLabelTextStyle={{ color: '#9b958e', fontSize: 10 }}
             yAxisTextStyle={{ color: '#9b958e', fontSize: 10 }}
+            formatYLabel={(label) => {
+              const n = Number.parseFloat(label)
+              return Number.isFinite(n) ? n.toFixed(1) : label
+            }}
             rulesColor={colors.border}
+            rulesType="solid"
             xAxisColor={colors.border}
             yAxisColor="transparent"
             initialSpacing={8}
             spacing={calcSpacing}
-            noOfSections={4}
             yAxisThickness={0}
             xAxisThickness={1}
             disableScroll={false}

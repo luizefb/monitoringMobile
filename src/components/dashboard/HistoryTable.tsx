@@ -35,14 +35,8 @@ export function HistoryTable({ records }: HistoryTableProps) {
                 <Text style={styles.emptyText}>Nenhum registro encontrado</Text>
               </View>
             ) : (
-              sorted.map((record, index) => (
-                <View
-                  key={record.id}
-                  style={[
-                    styles.dataRow,
-                    index < sorted.length - 1 && styles.dataRowBorder,
-                  ]}
-                >
+              sorted.map((record) => (
+                <View key={record.id} style={styles.dataRow}>
                   <Text style={[styles.dataCell, { flex: 1 }]}>
                     {format(new Date(record.timestamp), 'dd/MM/yyyy HH:mm', { locale: ptBR })}
                   </Text>
@@ -86,18 +80,13 @@ export function HistoryTable({ records }: HistoryTableProps) {
 
 const styles = StyleSheet.create({
   tableContainer: {
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: colors.border,
     overflow: 'hidden',
   },
   headerRow: {
     flexDirection: 'row',
-    backgroundColor: colors.muted,
-    paddingHorizontal: spacing[4],
-    paddingVertical: spacing[2.5],
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    paddingHorizontal: spacing[1],
+    paddingBottom: spacing[2],
+    marginBottom: spacing[1],
   },
   headerCell: {
     fontSize: 10,
@@ -116,12 +105,8 @@ const styles = StyleSheet.create({
   dataRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: spacing[4],
-    paddingVertical: spacing[2.5],
-  },
-  dataRowBorder: {
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    paddingHorizontal: spacing[1],
+    paddingVertical: spacing[3],
   },
   dataCell: {
     fontSize: 11,
