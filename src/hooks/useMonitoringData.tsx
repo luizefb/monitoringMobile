@@ -15,6 +15,7 @@ import {
   subscribeToRecords,
   unsubscribeFromRecords,
 } from "../lib/monitoring-service"
+import { setupNotifications, checkAndNotify } from "../lib/notification-service"
 
 const MonitoringContext = createContext<MonitoringContextType | null>(null)
 
@@ -22,6 +23,10 @@ export function MonitoringProvider({ children }: { children: ReactNode }) {
   const [records, setRecords] = useState<MonitoringRecord[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    void setupNotifications()
+  }, [])
 
   useEffect(() => {
     if (!isSupabaseConfigured) {
@@ -60,6 +65,7 @@ export function MonitoringProvider({ children }: { children: ReactNode }) {
         const exists = prev.some((r) => r.id === newRecord.id)
         return exists ? prev : [...prev, newRecord]
       })
+      checkAndNotify(newRecord)
     })
 
     return () => {
