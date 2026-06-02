@@ -22,5 +22,5 @@ export interface MonitoringContextType {
   isLive: boolean
 }
 
-export const TEMP_ALERT_THRESHOLD = 27
-export const HUMIDITY_ALERT_THRESHOLD = 60
+export const TEMP_ALERT_THRESHOLD = 24
+export const HUMIDITY_ALERT_THRESHOLD = 59
