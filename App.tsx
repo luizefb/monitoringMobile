@@ -4,10 +4,11 @@ import { StatusBar, StyleSheet, Platform } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { LayoutDashboard } from 'lucide-react-native'
+import { Info, LayoutDashboard } from 'lucide-react-native'
 import Toast from 'react-native-toast-message'
 import { MonitoringProvider } from './src/hooks/useMonitoringData'
 import { DashboardPage } from './src/pages/DashboardPage'
+import { ExplanationPage } from './src/pages/ExplanationPage'
 import { colors } from './src/styles/theme'
 
 const Tab = createBottomTabNavigator()
@@ -38,6 +39,16 @@ export default function App() {
                 tabBarLabel: 'Dashboard',
                 tabBarIcon: ({ color, size }) => (
                   <LayoutDashboard color={color} size={size} />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Sobre"
+              component={ExplanationPage}
+              options={{
+                tabBarLabel: 'Sobre',
+                tabBarIcon: ({ color, size }) => (
+                  <Info color={color} size={size} />
                 ),
               }}
             />
